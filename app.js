@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
     res.render("index", {})
 });
 
-app.post('/', (req, res) => {
+app.post('/meows', (req, res) => {
     const name = req.body.name;
     const meow = {
         name: name,
@@ -25,11 +25,16 @@ app.post('/', (req, res) => {
     }
     meows.insert(meow)
     .then((docs) => {
-        res.render('/', {docs})
-    }).catch((err) => {
-        console.log(err);
-    }).then(() =>  db.close())
+        console.log(docs);
+    })
 });
+
+app.get('/meows', (req, res) => {
+    meows.find()
+    .then(allTheMeows => {
+        res.json(allTheMeows)
+    })
+})
 
 app.listen(5000, (req, res) => {
     console.log("Running on port 5000");
